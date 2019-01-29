@@ -12,6 +12,6 @@ public interface CommonService {
     //检查更新
     @FormUrlEncoded
     @POST("user/login")
-    Observable<SingleEntiry> login(@FieldMap WeakHashMap<String, Object> params);
+    Observable<SingleEntity> login(@FieldMap WeakHashMap<String, Object> params);
 
 }

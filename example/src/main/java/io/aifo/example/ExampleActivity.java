@@ -4,17 +4,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
 import java.util.WeakHashMap;
-
 import com.foryou.net.FoYoNet;
 import com.foryou.net.callback.IFailure;
 import com.foryou.net.callback.ISuccess;
 import com.foryou.net.http.IMethod;
-
 import io.reactivex.Observable;
 
 public class ExampleActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

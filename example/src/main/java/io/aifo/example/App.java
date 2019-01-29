@@ -18,7 +18,7 @@ public class App extends Application {
 
         FoYoNet.init(this)
                 .withApiHost("http://mock.fuyoukache.com/mock/5c36ed584e7ea94d5bf6ba3b/aifo/")
-                .withRespFilter(new AppRespFilter())
+//              .withRespFilter(new AppRespFilter())
                 .withInterceptor(new FoYoInterceptor())
                 .withLoggerAdapter()
                 .configure();
