@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -198,6 +199,7 @@ public class FoYoNet {
             public void onSuccess(RespData data) {
                 callBack.onSucc(data);
             }
+
             @Override
             public void onFailure(RespData data) {
                 callBack.onFail(data);

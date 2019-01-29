@@ -3,16 +3,20 @@ package com.foryou.net.utils;
 import android.content.Context;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 import com.foryou.net.FoYoNet;
 import com.foryou.net.callback.IFailure;
 import com.foryou.net.callback.ISuccess;
+import com.foryou.net.config.ConfigKeys;
+import com.foryou.net.config.Configurator;
 import com.foryou.net.http.IMethod;
 import com.foryou.net.loader.LoaderStyle;
 import com.foryou.net.mvp.BaseView;
 import com.foryou.net.rx.FoYoLifeCycle;
+
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -44,23 +48,28 @@ public class FoYoNetBuilder {
         this.mService = service;
         return this;
     }
+
     public final FoYoNetBuilder method(IMethod method) {
         this.mMethod = method;
         return this;
     }
+
     public final FoYoNetBuilder url(String url) {
         this.mUrl = url;
         return this;
     }
+
     public final FoYoNetBuilder params(WeakHashMap<String, String> params) {
         PARAMS.putAll(params);
         return this;
     }
+
     public final FoYoNetBuilder params(String key, String value) {
         if (null != value)
             PARAMS.put(key, value);
         return this;
     }
+
     public final FoYoNetBuilder params(String key, Object value) {
         if (null != value)
             PARAMS.put(key, value);
@@ -115,18 +124,19 @@ public class FoYoNetBuilder {
         this.mLoaderStyle = LoaderStyle.BallSpinFadeLoaderIndicator;
         return this;
     }
-
     public final FoYoNetBuilder success(ISuccess success) {
         this.mSuccess = success;
         return this;
     }
-
     public final FoYoNetBuilder failure(IFailure failure) {
         this.mFailure = failure;
         return this;
     }
-
     public final FoYoNet build() {
+        HashMap<String, Object> globalParams = Configurator.getInstance().getConfiguration(ConfigKeys.NET_GLOBLE_PARAMS);
+        if (null != globalParams) {
+            PARAMS.putAll(globalParams);
+        }
         return new FoYoNet(mUrl, mService,
                 mMethod, PARAMS, mRequestBody,
                 mContext, mLoaderStyle, mFile, mSuccess,
