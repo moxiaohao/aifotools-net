@@ -20,6 +20,7 @@ public class App extends Application {
                 .withApiHost("http://mock.fuyoukache.com/mock/5c36ed584e7ea94d5bf6ba3b/aifo/")
                 .withRespFilter(new AppRespFilter())
                 .withInterceptor(new FoYoInterceptor())
+                .withToken("123123123123123")
                 .withLoggerAdapter()
                 .withDebugMode(true)
                 .configure();
