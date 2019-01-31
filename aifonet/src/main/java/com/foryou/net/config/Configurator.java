@@ -62,7 +62,7 @@ public final class Configurator {
         Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy) {
             @Override
             public boolean isLoggable(int priority, @Nullable String tag) {
-                return BuildConfig.DEBUG;
+                return Configurator.isDebugMode();
             }
         });
         return this;
