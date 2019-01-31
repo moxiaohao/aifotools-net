@@ -123,7 +123,8 @@ public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycl
 ```
 
 - if you want use RxJava send a Request link  
-```
+
+```java
 Observable.just("").flatMap(s -> FoYoNet.builder()
                 .params("username", "jake") //添加参数
                 .params("password", "123456")
@@ -149,6 +150,7 @@ Observable.just("").flatMap(s -> FoYoNet.builder()
                         FoYoLogger.i(TAG, "request failed and do something"); //请求失败 提示原因
                     }
                 });
+
 ```
 
 
