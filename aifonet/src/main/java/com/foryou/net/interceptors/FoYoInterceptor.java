@@ -8,6 +8,7 @@ import java.nio.charset.UnsupportedCharsetException;
 import java.util.LinkedHashMap;
 
 import com.foryou.net.BuildConfig;
+import com.foryou.net.config.Configurator;
 import com.foryou.net.utils.FoYoLogger;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -35,7 +36,7 @@ public class FoYoInterceptor extends BaseInterceptor {
         Response response = chain.proceed(request);
         ResponseBody body = response.body();
 
-        if (!BuildConfig.DEBUG) {
+        if (!Configurator.isDebugMode()) {
             return response;
         }
         if (body == null)

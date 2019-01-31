@@ -114,7 +114,6 @@ public class FoYoNet {
 
     /**
      * 构造请求Observable 可在项目中RxJava 串行使用
-     *
      * @param <T>
      * @return
      */
@@ -189,7 +188,6 @@ public class FoYoNet {
      * @param <T>
      */
     private <T> void execute(Observable<T> observable, final CallListener callBack) {
-
         Observable<T> tObservable = observable.compose(new SwitchSchedulers<T>().applySchedulers());
         if (null != LIFE_CYCLE) {
             tObservable = tObservable.compose(LIFE_CYCLE.<T>bindToLife());

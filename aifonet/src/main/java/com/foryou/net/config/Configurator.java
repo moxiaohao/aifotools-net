@@ -68,13 +68,18 @@ public final class Configurator {
         return this;
     }
 
+    public final Configurator withDebugMode(boolean debug) {
+        FOYO_CONFIGS.put(ConfigKeys.DEBUG_MODE, debug);
+        return this;
+    }
+
     public final Configurator withApiHost(String host) {
         FOYO_CONFIGS.put(ConfigKeys.API_HOST, host);
         return this;
     }
 
     public final Configurator withToken(String token) {
-        FOYO_CONFIGS.put(ConfigKeys.TOKEN.name(), token);
+        FOYO_CONFIGS.put(ConfigKeys.TOKEN, token);
         return this;
     }
 
@@ -137,6 +142,15 @@ public final class Configurator {
     public final boolean hasKey(Object key) {
         checkConfiguration();
         return FOYO_CONFIGS.containsValue(key);
+    }
+
+    public static boolean isDebugMode() {
+        Object configuration = Configurator.getInstance().getConfiguration(ConfigKeys.DEBUG_MODE);
+        boolean isDebug = false;
+        if (null != configuration) {
+            isDebug = (boolean) configuration;
+        }
+        return isDebug;
     }
 
     final public <T> T getConfiguration(Object key) {

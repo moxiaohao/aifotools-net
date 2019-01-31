@@ -75,50 +75,41 @@ public class FoYoNetBuilder {
             PARAMS.put(key, value);
         return this;
     }
-
     public final FoYoNetBuilder paramsValueObj(WeakHashMap<String, Object> params) {
         PARAMS.putAll(params);
         return this;
     }
-
     public final FoYoNetBuilder file(File file) {
         this.mFile = file;
         return this;
     }
-
     public final FoYoNetBuilder file(String filePath) {
         this.mFile = new File(filePath);
         return this;
     }
-
     public final FoYoNetBuilder raw(String raw) {
         this.mRequestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), raw);
         return this;
     }
-
     public final FoYoNetBuilder context(Context context) {
         this.mContext = context;
         return this;
     }
-
     public final FoYoNetBuilder bindLifeCycle(FoYoLifeCycle lifeCycle) {
         this.mFoYoRxLifecycle = lifeCycle;
         return this;
     }
-
     public final FoYoNetBuilder view(BaseView view) {
         this.mView = view;
         this.mContext = view.getViewContext();
         this.mFoYoRxLifecycle = view;
         return this;
     }
-
     public final FoYoNetBuilder loader(Context context, LoaderStyle loaderStyle) {
         this.mContext = context;
         this.mLoaderStyle = loaderStyle;
         return this;
     }
-
     public final FoYoNetBuilder loader(Context context) {
         this.mContext = context;
         this.mLoaderStyle = LoaderStyle.BallSpinFadeLoaderIndicator;

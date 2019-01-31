@@ -8,6 +8,7 @@ package com.foryou.net.config;
  */
 public enum ConfigKeys {
 
+    DEBUG_MODE,
     API_HOST,
     APPLICATION_CONTEXT,
     TOKEN,

@@ -30,7 +30,6 @@ public class ErrorStatus {
 
     /**
      * Throwable convert to Exception
-     *
      * @param e
      * @return
      */
