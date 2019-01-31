@@ -1,18 +1,28 @@
 package io.aifo.example;
 
-import android.support.v7.app.AppCompatActivity;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
-import java.util.WeakHashMap;
+
 import com.foryou.net.FoYoNet;
-import com.foryou.net.callback.IFailure;
 import com.foryou.net.callback.ISuccess;
+import com.foryou.net.filter.data.RespData;
 import com.foryou.net.http.IMethod;
+import com.foryou.net.rx.FoYoLifeCycle;
+import com.foryou.net.rx.FoYoObserver;
+import com.foryou.net.utils.FoYoLogger;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.android.ActivityEvent;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
-public class ExampleActivity extends AppCompatActivity {
 
+public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycle {
+
+    public static final String TAG = ExampleActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,29 +40,56 @@ public class ExampleActivity extends AppCompatActivity {
     void request() {
 
         FoYoNet.builder()
-                .params("uname", "zhangsan")
-                .loader(this)
-                .service(CommonService.class)
-                .method(new IMethod<CommonService>() {
-                    @Override
-                    public Observable ob(CommonService service, WeakHashMap params) {
-                        return service.login(params);
-                    }
+                .params("username", "jake") //添加参数
+                .params("password", "123456")
+                .loader(ExampleActivity.this) //添加默认加载状态
+                .bindLifeCycle(this) //绑定生命周期 处理内存泄露
+                .service(CommonService.class)  //Retrofit 请求 Service类
+                .method((IMethod<CommonService>) CommonService::login) //具体的请求 方法
+                .success((ISuccess<SingleEntity>) response -> {
+                    FoYoLogger.i(TAG, "request success and do something");//请求成功 更新数据
                 })
-                .success(new ISuccess<SingleEntity>() {
-                    @Override
-                    public void onSuccess(SingleEntity response) {
-                        Toast.makeText(ExampleActivity.this, "成功", Toast.LENGTH_SHORT).show();
-                    }
+                .failure((code, desc) -> {
+                    FoYoLogger.i(TAG, "request failed and do something"); //请求失败 提示原因
                 })
-                .failure(new IFailure() {
-                    @Override
-                    public void onFailure(int code, String desc) {
-                        Toast.makeText(ExampleActivity.this, desc, Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .build()
-                .excute();
+                .build()//构建
+                .excute();//执行
     }
 
+    @SuppressLint("CheckResult")
+    void requestLink() {
+
+        Observable.just("").flatMap(s -> FoYoNet.builder()
+                .params("username", "jake") //添加参数
+                .params("password", "123456")
+                .loader(ExampleActivity.this) //添加默认加载状态
+                .service(CommonService.class)  //Retrofit 请求 Service类
+                .method((IMethod<CommonService>) CommonService::login) //具体的请求 方法;
+                .build().request()).flatMap(o -> FoYoNet.builder()
+                .params("username", "jake") //添加参数
+                .params("password", "123456")
+                .loader(ExampleActivity.this) //添加默认加载状态
+                .service(CommonService.class)  //Retrofit 请求 Service类
+                .method((IMethod<CommonService>) CommonService::login) //具体的请求 方法;
+                .build().request())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new FoYoObserver<Object>() {
+                    @Override
+                    public void onSuccess(RespData data) {
+                        FoYoLogger.i(TAG, "request success and do something");//请求成功 更新数据
+                    }
+                    @Override
+                    public void onFailure(RespData data) {
+                        FoYoLogger.i(TAG, "request failed and do something"); //请求失败 提示原因
+                    }
+                });
+
+    }
+
+
+    @Override
+    public <T> LifecycleTransformer<T> bindToLife() {
+        return bindUntilEvent(ActivityEvent.DESTROY);
+    }
 }
