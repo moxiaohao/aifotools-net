@@ -19,7 +19,7 @@ Android Development Tools
 ## Step 1. Add the JitPack repository to your build file
 
 #### Add it in your root build.gradle at the end of repositories:
-```
+```groovy
 allprojects {
 	repositories {
 		...
@@ -29,7 +29,7 @@ allprojects {
 ```
 
 ## Step 2. Add the dependency
-```
+```groovy
 dependencies 
 {
 	implementation 'com.github.moxiaohao:aifotools:Tag'
@@ -39,7 +39,7 @@ dependencies
 # 使用说明:
 
 - add this code in your Application class
-```
+```java
 FoYoNet.init(application)  //初始化
                 .withApiHost(UrlConstant.URL_BASE)  //设置网络请求 同理的 Domain
                 .withHttpsCerPath("fuyoukache.cer") //设置Https 证书
@@ -56,7 +56,7 @@ FoYoNet.init(application)  //初始化
 
 
 - define a Retrofit Service 
-```
+```java
 public interface CommonService {
 
     @FormUrlEncoded
@@ -69,7 +69,7 @@ public interface CommonService {
 - define a Result Entity for response json 
 
 - BaseEntity
-```
+```java
 public class BaseEntity implements Serializable {
 
     public int code;
@@ -78,7 +78,7 @@ public class BaseEntity implements Serializable {
 }
 ```
 - Business Entity
-```
+```java
 public class SingleEntity extends BaseEntity {
 
     public List<DataBean> data;
@@ -92,10 +92,10 @@ public class SingleEntity extends BaseEntity {
 ```
 
 - Activity or Fragment can implement FoYoLifeCycle
-```
+```java
 public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycle
 ```
-```
+```java
 @Override
     public <T> LifecycleTransformer<T> bindToLife() {
         return bindUntilEvent(ActivityEvent.DESTROY);
@@ -104,7 +104,7 @@ public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycl
 
 - then you can send a http request 
 
-```
+```java
           FoYoNet.builder()
                 .params("username", "jake") //添加参数
                 .params("password", "123456")
@@ -150,7 +150,6 @@ Observable.just("").flatMap(s -> FoYoNet.builder()
                         FoYoLogger.i(TAG, "request failed and do something"); //请求失败 提示原因
                     }
                 });
-
 ```
 
 
