@@ -60,7 +60,7 @@ public class FoYoNetBuilder {
         return this;
     }
 
-    public final FoYoNetBuilder params(WeakHashMap<String, String> params) {
+    public final FoYoNetBuilder params(Map<String, String> params) {
         PARAMS.putAll(params);
         return this;
     }
@@ -77,7 +77,7 @@ public class FoYoNetBuilder {
         return this;
     }
 
-    public final FoYoNetBuilder paramsValueObj(WeakHashMap<String, Object> params) {
+    public final FoYoNetBuilder paramsValueObj(Map<String, Object> params) {
         PARAMS.putAll(params);
         return this;
     }
