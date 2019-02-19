@@ -1,4 +1,4 @@
-package com.foryou.net.mvp;
+package com.foryou.net.base;
 
 /**
  * Description:

@@ -15,7 +15,7 @@ import com.foryou.net.config.ConfigKeys;
 import com.foryou.net.config.Configurator;
 import com.foryou.net.http.IMethod;
 import com.foryou.net.loader.LoaderStyle;
-import com.foryou.net.mvp.BaseView;
+import com.foryou.net.base.BaseView;
 import com.foryou.net.rx.FoYoLifeCycle;
 
 import okhttp3.MediaType;

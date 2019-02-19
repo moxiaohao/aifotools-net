@@ -1,4 +1,4 @@
-package com.foryou.net.mvp;
+package com.foryou.net.base;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * Date: 7/1/2019
  * Email: shenlei@foryou56.com
  */
-public interface BaseBiz {
+public interface BaseDataSource {
 
     interface LoadTasksCallback<T> {
 
@@ -21,7 +21,7 @@ public interface BaseBiz {
 
         void onTaskLoaded(T task);
 
-        void onDataNotAvailable(int errorType, String message);
+        void onDataNotAvailable(int code,String desc);
     }
 
 }
