@@ -37,6 +37,7 @@ public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycl
         });
     }
 
+
     void request() {
 
         FoYoNet.builder()

@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import com.foryou.net.BuildConfig;
 import com.foryou.net.config.Configurator;
 import com.foryou.net.utils.FoYoLogger;
+
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -33,7 +34,9 @@ public class FoYoInterceptor extends BaseInterceptor {
     public Response intercept(@NonNull Interceptor.Chain chain) throws IOException {
 
         Request request = chain.request();
+        long startTime = System.currentTimeMillis();
         Response response = chain.proceed(request);
+        long endTime = System.currentTimeMillis();
         ResponseBody body = response.body();
 
         if (!Configurator.isDebugMode()) {
@@ -64,13 +67,23 @@ public class FoYoInterceptor extends BaseInterceptor {
             //***********************do something*****************************
             LinkedHashMap<String, String> urlParameters = getUrlParameters(chain);
             LinkedHashMap<String, String> bodyParameters = getBodyParameters(chain);
+
+            String timeResuming = cacuTimeResuming(startTime, endTime);
+
             FoYoLogger.i(TAG, request.toString() + "\n" +
                     "UrlParameter:" + urlParameters + "\n" +
                     "BodyParameter:" + bodyParameters + "\n" +
                     response + "\n" +
-                    "Result:" + result);
+                    "Result:" + result + "\n" +
+                    "TimeConsuming:" + timeResuming);
         }
         return response;
+    }
+
+
+    private String cacuTimeResuming(long startTime, long endTime) {
+        long timeConsuming = endTime - startTime;
+        return timeConsuming + "ms";
     }
 
 
