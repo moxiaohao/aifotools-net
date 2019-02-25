@@ -50,7 +50,8 @@ public class ErrorStatus {
             return convert(ErrorCode.CODE_SSLHANDSHAKE_EXCEPTION);
         if (e instanceof JsonSyntaxException)
             return convert(ErrorCode.CODE_JSON_SYNTAX_EXCEPTION);
-        return convert(ErrorCode.CODE_UNKNOW);//未知异常
+        return new ErrorStatus(699,e.getMessage());
+//      return convert(ErrorCode.CODE_UNKNOW);//未知异常
     }
 
     public static ErrorStatus getStatusByCode(int code) {
