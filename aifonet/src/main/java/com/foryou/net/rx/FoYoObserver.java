@@ -20,9 +20,9 @@ public abstract class FoYoObserver<T> implements Observer<T> {
 
     private static final int OBSERVER_EXCEPTION = 700;
 
-    public abstract void onSuccess(RespData data);
+    public abstract void onSuccess(T data);
 
-    public abstract void onFailure(RespData data);
+    public abstract void onFailure(int code ,String desc);
 
     private Disposable disposable;
 
@@ -68,9 +68,9 @@ public abstract class FoYoObserver<T> implements Observer<T> {
             proceedData.respError = new RespError(OBSERVER_EXCEPTION, e.getMessage());
             e.printStackTrace();
         }
-        onFailure(proceedData);
-
+        onFailure(proceedData.respError.code(),proceedData.respError.errorMsg());
     }
+
 
     private void preOnSuccess(T t) {
 
@@ -79,9 +79,9 @@ public abstract class FoYoObserver<T> implements Observer<T> {
             successData.respEntity = new RespEntity<T>(t);
             RespData proceedData = RespFilterManager.execute(successData);
             if (proceedData.respError == null) {
-                onSuccess(proceedData);
+                onSuccess((T) proceedData.respEntity.entity());
             } else {
-                onFailure(proceedData);
+                onFailure(proceedData.respError.code(),proceedData.respError.errorMsg());
             }
         } catch (Exception e) {
             successData.respError = new RespError(OBSERVER_EXCEPTION, e.getMessage());

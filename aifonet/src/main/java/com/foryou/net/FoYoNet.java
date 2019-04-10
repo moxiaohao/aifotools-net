@@ -141,9 +141,9 @@ public class FoYoNet {
 
     private interface CallListener<T> {
 
-        void onSucc(RespData data);
+        void onSucc(T data);
 
-        void onFail(RespData data);
+        void onFail(int code ,String desc);
     }
 
     /**
@@ -156,18 +156,18 @@ public class FoYoNet {
             if (null != o) {
                 execute(o, new CallListener() {
                     @Override
-                    public void onSucc(RespData data) {
+                    public void onSucc(Object data) {
                         stopLoding();
                         if (null != SUCCESS) {
-                            SUCCESS.onSuccess(data.respEntity.entity());
+                            SUCCESS.onSuccess(data);
                         }
                     }
 
                     @Override
-                    public void onFail(RespData data) {
+                    public void onFail(int code, String desc) {
                         stopLoding();
                         if (null != FAILURE) {
-                            FAILURE.onFailure(data.respError.code(), data.respError.errorMsg());
+                            FAILURE.onFailure(code, desc);
                         }
                     }
                 });
@@ -194,13 +194,12 @@ public class FoYoNet {
         }
         tObservable.subscribe(new FoYoObserver<T>() {
             @Override
-            public void onSuccess(RespData data) {
+            public void onSuccess(T data) {
                 callBack.onSucc(data);
             }
-
             @Override
-            public void onFailure(RespData data) {
-                callBack.onFail(data);
+            public void onFailure(int code, String desc) {
+                callBack.onFail(code,desc);
             }
         });
     }

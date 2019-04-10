@@ -32,7 +32,7 @@ public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycl
         this.findViewById(R.id.tv_hello).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                request();
+                requestLink();
             }
         });
     }
@@ -77,11 +77,12 @@ public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycl
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new FoYoObserver<Object>() {
                     @Override
-                    public void onSuccess(RespData data) {
+                    public void onSuccess(Object data) {
                         FoYoLogger.i(TAG, "request success and do something");//请求成功 更新数据
                     }
+
                     @Override
-                    public void onFailure(RespData data) {
+                    public void onFailure(int code, String desc) {
                         FoYoLogger.i(TAG, "request failed and do something"); //请求失败 提示原因
                     }
                 });
