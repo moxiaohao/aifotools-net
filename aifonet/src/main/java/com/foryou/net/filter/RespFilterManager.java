@@ -19,11 +19,10 @@ public class RespFilterManager {
     /**
      * 执行 网络请求 返回数据 的分类处理 解耦框架和业务层
      * @param data
-     * @param <T>
      * @return
      * @throws Exception
      */
-    public static <T> RespData execute(RespData data) throws Exception {
+    public static RespData execute(RespData data) throws Exception {
 
         List<RespFilter> filters = new ArrayList<>();
         List<RespFilter> clientFilters = Configurator.getInstance().getConfiguration(ConfigKeys.NET_FILTER);

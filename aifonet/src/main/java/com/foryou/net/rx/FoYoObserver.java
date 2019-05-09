@@ -2,6 +2,7 @@ package com.foryou.net.rx;
 
 
 import com.foryou.net.filter.RespFilterManager;
+import com.foryou.net.filter.data.IRespEntity;
 import com.foryou.net.filter.data.RespData;
 import com.foryou.net.filter.data.RespEntity;
 import com.foryou.net.filter.data.RespError;
@@ -22,7 +23,7 @@ public abstract class FoYoObserver<T> implements Observer<T> {
 
     public abstract void onSuccess(T data);
 
-    public abstract void onFailure(int code ,String desc);
+    public abstract void onFailure(int code, String desc);
 
     private Disposable disposable;
 
@@ -43,8 +44,8 @@ public abstract class FoYoObserver<T> implements Observer<T> {
             return;
         }
         preOnSuccess(t);
-    }
 
+    }
     @Override
     public void onError(Throwable e) {
         ErrorStatus es = ErrorStatus.getStatus(e);
@@ -55,7 +56,6 @@ public abstract class FoYoObserver<T> implements Observer<T> {
     public void onComplete() {
 
     }
-
 
     private void preOnFailure(int code, String desc) {
         RespData proceedData;
@@ -68,20 +68,21 @@ public abstract class FoYoObserver<T> implements Observer<T> {
             proceedData.respError = new RespError(OBSERVER_EXCEPTION, e.getMessage());
             e.printStackTrace();
         }
-        onFailure(proceedData.respError.code(),proceedData.respError.errorMsg());
+        onFailure(proceedData.respError.code(), proceedData.respError.errorMsg());
     }
 
-
+    @SuppressWarnings("unchecked")
     private void preOnSuccess(T t) {
 
         RespData successData = new RespData();
         try {
             successData.respEntity = new RespEntity<T>(t);
+
             RespData proceedData = RespFilterManager.execute(successData);
             if (proceedData.respError == null) {
                 onSuccess((T) proceedData.respEntity.entity());
             } else {
-                onFailure(proceedData.respError.code(),proceedData.respError.errorMsg());
+                onFailure(proceedData.respError.code(), proceedData.respError.errorMsg());
             }
         } catch (Exception e) {
             successData.respError = new RespError(OBSERVER_EXCEPTION, e.getMessage());

@@ -8,9 +8,9 @@ import java.io.Serializable;
  * Date: 10/1/2019
  * Email: shenlei@foryou56.com
  */
-public class RespData implements Serializable {
+public class RespData<EntityType> implements Serializable {
 
-    public IRespEntity respEntity;
-    public IRespError respError;
+    public IRespEntity<EntityType> respEntity;
+    public IRespError<EntityType> respError;
 
 }

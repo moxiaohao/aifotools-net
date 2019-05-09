@@ -17,6 +17,7 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -60,27 +61,39 @@ public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycl
     @SuppressLint("CheckResult")
     void requestLink() {
 
-        Observable.just("").flatMap(s -> FoYoNet.builder()
-                .params("username", "jake") //添加参数
-                .params("password", "123456")
-                .loader(ExampleActivity.this) //添加默认加载状态
-                .service(CommonService.class)  //Retrofit 请求 Service类
-                .method((IMethod<CommonService>) CommonService::login) //具体的请求 方法;
-                .build().request()).flatMap(o -> FoYoNet.builder()
-                .params("username", "jake") //添加参数
-                .params("password", "123456")
-                .loader(ExampleActivity.this) //添加默认加载状态
-                .service(CommonService.class)  //Retrofit 请求 Service类
-                .method((IMethod<CommonService>) CommonService::login) //具体的请求 方法;
-                .build().request())
-                .subscribeOn(Schedulers.io())
+        Observable.just("orderSn").flatMap(new Function<String, Observable<SingleEntity>>() {
+            @Override
+            public Observable<SingleEntity> apply(String orderSn) throws Exception {
+                return FoYoNet.builder()
+                        .params("orderSn", orderSn)
+                        .service(CommonService.class)
+                        .method((IMethod<CommonService>) CommonService::login)
+                        .build()
+                        .request();
+            }
+        }).flatMap(new Function<SingleEntity, Observable<SingleEntity>>() {
+            @Override
+            public Observable<SingleEntity> apply(SingleEntity makePointInfoEntity) throws Exception {
+                return FoYoNet.builder()
+                        .service(CommonService.class)
+                        .method((IMethod<CommonService>) CommonService::login)
+                        .build().request();
+            }
+        }).flatMap(new Function<SingleEntity, Observable<SingleEntity>>() {
+            @Override
+            public Observable<SingleEntity> apply(SingleEntity truckDetailEntity) throws Exception {
+                return FoYoNet.builder()
+                        .service(CommonService.class)
+                        .method((IMethod<CommonService>) CommonService::login)
+                        .build().request();
+            }
+        }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new FoYoObserver<Object>() {
+                .subscribe(new FoYoObserver<SingleEntity>() {
                     @Override
-                    public void onSuccess(Object data) {
+                    public void onSuccess(SingleEntity data) {
                         FoYoLogger.i(TAG, "request success and do something");//请求成功 更新数据
                     }
-
                     @Override
                     public void onFailure(int code, String desc) {
                         FoYoLogger.i(TAG, "request failed and do something"); //请求失败 提示原因
