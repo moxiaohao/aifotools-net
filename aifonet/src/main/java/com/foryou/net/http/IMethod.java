@@ -19,5 +19,5 @@ public interface IMethod<X> {
      * @param params  request params
      * @return 返回的Observable<>对象W
      */
-     Observable ob(X service, WeakHashMap params);
+    Observable ob(X service, WeakHashMap<String, Object> params);
 }

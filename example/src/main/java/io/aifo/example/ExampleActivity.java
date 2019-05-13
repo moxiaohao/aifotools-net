@@ -33,7 +33,7 @@ public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycl
         this.findViewById(R.id.tv_hello).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestLink();
+                request();
             }
         });
     }
