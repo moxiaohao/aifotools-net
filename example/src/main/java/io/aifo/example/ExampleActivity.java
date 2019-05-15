@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.foryou.net.FoYoNet;
+import com.foryou.net.base.GetTaskFail;
+import com.foryou.net.base.GetTaskSucc;
 import com.foryou.net.callback.ISuccess;
 import com.foryou.net.filter.data.RespData;
 import com.foryou.net.http.IMethod;
@@ -33,13 +35,19 @@ public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycl
         this.findViewById(R.id.tv_hello).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                request();
+
+                request((singleEntity) -> {
+
+
+                }, (code, desc) -> {
+
+
+                });
             }
         });
     }
 
-
-    void request() {
+    void request(GetTaskSucc succ, GetTaskFail fail) {
 
         FoYoNet.builder()
                 .params("username", "jake") //添加参数
@@ -49,9 +57,11 @@ public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycl
                 .service(CommonService.class)  //Retrofit 请求 Service类
                 .method((IMethod<CommonService>) CommonService::login) //具体的请求 方法
                 .success((ISuccess<SingleEntity>) response -> {
+                    succ.onTaskLoaded(response);
                     FoYoLogger.i(TAG, "request success and do something");//请求成功 更新数据
                 })
                 .failure((code, desc) -> {
+                    fail.onTaskLoadedFail(code, desc);
                     FoYoLogger.i(TAG, "request failed and do something"); //请求失败 提示原因
                 })
                 .build()//构建
@@ -94,6 +104,7 @@ public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycl
                     public void onSuccess(SingleEntity data) {
                         FoYoLogger.i(TAG, "request success and do something");//请求成功 更新数据
                     }
+
                     @Override
                     public void onFailure(int code, String desc) {
                         FoYoLogger.i(TAG, "request failed and do something"); //请求失败 提示原因
