@@ -1,12 +1,7 @@
-package com.foryou.net.utils;
+package com.foryou.net.live;
 
 import android.content.Context;
 import android.text.TextUtils;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 import com.foryou.net.FoYoNet;
 import com.foryou.net.callback.IFailure;
@@ -14,9 +9,14 @@ import com.foryou.net.callback.ISuccess;
 import com.foryou.net.config.ConfigKeys;
 import com.foryou.net.config.Configurator;
 import com.foryou.net.http.IMethod;
+import com.foryou.net.http.LiveMethod;
 import com.foryou.net.loader.LoaderStyle;
-import com.foryou.net.base.BaseView;
 import com.foryou.net.rx.FoYoLifeCycle;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -27,7 +27,7 @@ import okhttp3.RequestBody;
  * Date: 7/1/2019
  * Email: shenlei@foryou56.com
  */
-public class FoYoNetBuilder {
+public class NetLiveBuilder {
 
     private String mUrl = null;
     private Map<String, Object> PARAMS = new WeakHashMap<>();
@@ -40,99 +40,75 @@ public class FoYoNetBuilder {
     private IMethod mMethod;
     private Class<?> mService;
     private FoYoLifeCycle mFoYoRxLifecycle;
-    private BaseView mView;
+    private Call mCall;
+    private LiveMethod mLiveMethod ;
 
-    public FoYoNetBuilder() {
+    public NetLiveBuilder() {
     }
 
-    public final FoYoNetBuilder service(Class<?> service) {
+    public final NetLiveBuilder service(Class<?> service) {
         this.mService = service;
         return this;
     }
 
-    public final FoYoNetBuilder method(IMethod method) {
-        this.mMethod = method;
-        return this;
-    }
-
-    public final FoYoNetBuilder url(String url) {
-        this.mUrl = url;
-        return this;
-    }
-
-    public final FoYoNetBuilder params(Map<String, String> params) {
+    public final NetLiveBuilder params(Map<String, String> params) {
         PARAMS.putAll(params);
         return this;
     }
 
-    public final FoYoNetBuilder params(String key, String value) {
+    public final NetLiveBuilder params(String key, String value) {
         if (null != value)
             PARAMS.put(key, value);
         return this;
     }
 
-    public final FoYoNetBuilder params(String key, Object value) {
+    public final NetLiveBuilder params(String key, Object value) {
         if (null != value)
             PARAMS.put(key, value);
         return this;
     }
 
-    public final FoYoNetBuilder paramsValueObj(Map<String, Object> params) {
+    public final NetLiveBuilder paramsValueObj(Map<String, Object> params) {
         PARAMS.putAll(params);
         return this;
     }
 
-    public final FoYoNetBuilder file(File file) {
-        this.mFile = file;
+    public final NetLiveBuilder createCall(Call call) {
+        this.mCall = call;
         return this;
     }
 
-    public final FoYoNetBuilder file(String filePath) {
-        this.mFile = new File(filePath);
+    public final NetLiveBuilder liveMethod(LiveMethod liveMethod) {
+        this.mLiveMethod = liveMethod;
         return this;
     }
 
-    public final FoYoNetBuilder raw(String raw) {
+
+
+    public final NetLiveBuilder raw(String raw) {
         this.mRequestBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), raw);
         return this;
     }
 
-    public final FoYoNetBuilder context(Context context) {
+    public final NetLiveBuilder context(Context context) {
         this.mContext = context;
         return this;
     }
 
-    public final FoYoNetBuilder bindLifeCycle(FoYoLifeCycle lifeCycle) {
+    public final NetLiveBuilder bindLifeCycle(FoYoLifeCycle lifeCycle) {
         this.mFoYoRxLifecycle = lifeCycle;
         return this;
     }
 
-    public final FoYoNetBuilder view(BaseView view) {
-        this.mView = view;
-        this.mContext = view.getViewContext();
-        this.mFoYoRxLifecycle = view;
-        return this;
-    }
-
-    public final FoYoNetBuilder loader(Context context, LoaderStyle loaderStyle) {
+    public final NetLiveBuilder loader(Context context, LoaderStyle loaderStyle) {
         this.mContext = context;
         this.mLoaderStyle = loaderStyle;
         return this;
     }
 
-    public final FoYoNetBuilder loader(Context context) {
+    public final NetLiveBuilder loader(Context context) {
         this.mContext = context;
         this.mLoaderStyle = LoaderStyle.BallSpinFadeLoaderIndicator;
-        return this;
-    }
-
-    public final FoYoNetBuilder success(ISuccess success) {
-        this.mSuccess = success;
-        return this;
-    }
-
-    public final FoYoNetBuilder failure(IFailure failure) {
-        this.mFailure = failure;
         return this;
     }
 
@@ -147,8 +123,8 @@ public class FoYoNetBuilder {
         }
         return new FoYoNet(mUrl, mService,
                 mMethod, PARAMS, mRequestBody,
-                mContext, mLoaderStyle, mSuccess,
-                mFailure, mFoYoRxLifecycle);
+                mContext, mLoaderStyle, mFile, mSuccess,
+                mFailure, mFoYoRxLifecycle, mLiveMethod);
     }
 
 }

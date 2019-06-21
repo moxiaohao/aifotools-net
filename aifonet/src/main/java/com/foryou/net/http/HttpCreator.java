@@ -26,6 +26,7 @@ import javax.net.ssl.TrustManagerFactory;
 
 import com.foryou.net.FoYoNet;
 import com.foryou.net.config.ConfigKeys;
+import com.foryou.net.live.LiveDataCallAdapterFactory;
 import com.foryou.net.utils.ResourceTools;
 
 import io.reactivex.Observable;
@@ -92,6 +93,7 @@ public class HttpCreator {
                 .client(OKHttpHolder.OK_HTTP_CLIENT)
 //              .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(new LiveDataCallAdapterFactory())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }

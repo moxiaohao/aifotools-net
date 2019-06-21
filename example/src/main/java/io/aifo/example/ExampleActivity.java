@@ -1,7 +1,11 @@
 package io.aifo.example;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 
 import com.foryou.net.FoYoNet;
@@ -10,6 +14,9 @@ import com.foryou.net.base.GetTaskSucc;
 import com.foryou.net.callback.ISuccess;
 import com.foryou.net.filter.data.RespData;
 import com.foryou.net.http.IMethod;
+import com.foryou.net.http.LiveMethod;
+import com.foryou.net.live.Resource;
+import com.foryou.net.live.Status;
 import com.foryou.net.rx.FoYoLifeCycle;
 import com.foryou.net.rx.FoYoObserver;
 import com.foryou.net.utils.FoYoLogger;
@@ -36,16 +43,26 @@ public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycl
             @Override
             public void onClick(View v) {
 
-                request((singleEntity) -> {
-
-
-                }, (code, desc) -> {
-
-
+                request().observe(ExampleActivity.this, singleEntityResource -> {
+                    if(singleEntityResource.status == Status.ERROR){
+                        Log.i(TAG, "onClick: ERROR"+":Code:"+singleEntityResource.code+"message:"+singleEntityResource.message);
+                    } else if(singleEntityResource.status == Status.SUCCESS){
+                        Log.i(TAG, "onClick: SUCCESS"+":Code:"+singleEntityResource.code+"Data:"+singleEntityResource.data.toString());
+                    }
                 });
             }
         });
     }
+
+
+    LiveData<Resource<SingleEntity>> request() {
+        return  FoYoNet.onLive()
+                .service(CommonService.class)
+                .liveMethod((LiveMethod<CommonService, SingleEntity>) CommonService::update)
+                .build()
+                .asLiveData();
+    }
+
 
     void request(GetTaskSucc succ, GetTaskFail fail) {
 
@@ -67,6 +84,9 @@ public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycl
                 .build()//构建
                 .excute();//执行
     }
+
+
+
 
     @SuppressLint("CheckResult")
     void requestLink() {
