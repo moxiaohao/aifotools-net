@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 
 import com.foryou.net.filter.data.RespData;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -21,5 +22,5 @@ public interface CommonService {
     //检查更新
     @FormUrlEncoded
     @POST("user/login")
-    LiveData<RespData<SingleEntity>> update(@FieldMap Map<String, Object> params);
+    LiveData<RespData<SingleEntity>> update(@FieldMap HashMap<String, Object> params);
 }

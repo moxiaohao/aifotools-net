@@ -2,10 +2,8 @@ package io.aifo.example;
 
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 
 import com.foryou.net.FoYoNet;
@@ -13,16 +11,18 @@ import com.foryou.net.base.GetTaskFail;
 import com.foryou.net.base.GetTaskSucc;
 import com.foryou.net.callback.ISuccess;
 import com.foryou.net.filter.data.RespData;
+import com.foryou.net.http.HttpCreator;
 import com.foryou.net.http.IMethod;
-import com.foryou.net.http.LiveMethod;
+import com.foryou.net.live.HttpCall;
 import com.foryou.net.live.Resource;
-import com.foryou.net.live.Status;
 import com.foryou.net.rx.FoYoLifeCycle;
 import com.foryou.net.rx.FoYoObserver;
 import com.foryou.net.utils.FoYoLogger;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+
+import java.util.HashMap;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -43,24 +43,31 @@ public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycl
             @Override
             public void onClick(View v) {
 
-                request().observe(ExampleActivity.this, singleEntityResource -> {
-                    if(singleEntityResource.status == Status.ERROR){
-                        Log.i(TAG, "onClick: ERROR"+":Code:"+singleEntityResource.code+"message:"+singleEntityResource.message);
-                    } else if(singleEntityResource.status == Status.SUCCESS){
-                        Log.i(TAG, "onClick: SUCCESS"+":Code:"+singleEntityResource.code+"Data:"+singleEntityResource.data.toString());
-                    }
-                });
+//                request().observe(ExampleActivity.this, singleEntityResource -> {
+//                    if (null != singleEntityResource) {
+//                        if (singleEntityResource.status == Status.ERROR) {
+//                            Log.i(TAG, "onClick: ERROR" + ":Code:" + singleEntityResource.code + "message:" + singleEntityResource.message);
+//                        } else if (singleEntityResource.status == Status.SUCCESS) {
+//                            Log.i(TAG, "onClick: SUCCESS" + ":Code:" + singleEntityResource.code + "Data:" + singleEntityResource.data.toString());
+//                        }
+//                    }
+//                });
+
+                Intent intent = new Intent(ExampleActivity.this, SecondActivity.class);
+                startActivity(intent);
             }
         });
     }
 
 
     LiveData<Resource<SingleEntity>> request() {
-        return  FoYoNet.onLive()
-                .service(CommonService.class)
-                .liveMethod((LiveMethod<CommonService, SingleEntity>) CommonService::update)
-                .build()
-                .asLiveData();
+        return new HttpCall<SingleEntity>() {
+            @Override
+            public LiveData<RespData<SingleEntity>> liveMethod() {
+                HashMap<String, Object> params = new HashMap<>();
+                return HttpCreator.getService(CommonService.class).update(params);
+            }
+        }.asLiveData();
     }
 
 
@@ -84,8 +91,6 @@ public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycl
                 .build()//构建
                 .excute();//执行
     }
-
-
 
 
     @SuppressLint("CheckResult")
