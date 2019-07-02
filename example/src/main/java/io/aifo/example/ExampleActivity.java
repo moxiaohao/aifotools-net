@@ -67,6 +67,7 @@ public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycl
                 HashMap<String, Object> params = new HashMap<>();
                 return HttpCreator.getService(CommonService.class).update(params);
             }
+
         }.asLiveData();
     }
 

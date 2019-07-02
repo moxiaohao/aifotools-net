@@ -21,6 +21,7 @@ public class App extends Application {
                 .withRespFilter(new AppRespFilter())
                 .withInterceptor(new FoYoInterceptor())
                 .withToken("123123123123123")
+                .withNoProxy(true)
                 .withLoggerAdapter()
                 .withDebugMode(true)
                 .configure();

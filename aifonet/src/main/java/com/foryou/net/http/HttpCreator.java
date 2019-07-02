@@ -26,6 +26,7 @@ import javax.net.ssl.TrustManagerFactory;
 
 import com.foryou.net.FoYoNet;
 import com.foryou.net.config.ConfigKeys;
+import com.foryou.net.config.Configurator;
 import com.foryou.net.live.LiveDataCallAdapterFactory;
 import com.foryou.net.utils.ResourceTools;
 
@@ -74,13 +75,25 @@ public class HttpCreator {
                     BUILDER.addInterceptor(interceptor);
                 }
             }
+            setNoProxy();
             //BUILDER.sslSocketFactory(Objects.requireNonNull(getSSLSocketFactory(trustedCertificatesInputStream())));
             return BUILDER;
+        }
+
+        private static void setNoProxy() {
+            Object proxyObject = Configurator.getInstance().getConfiguration(ConfigKeys.NET_NO_PROXY);
+            if (null != proxyObject) {
+                boolean noProxy = (boolean) proxyObject;
+                if (noProxy) {
+                    BUILDER.proxy(java.net.Proxy.NO_PROXY);
+                }
+            }
         }
 
         private static final OkHttpClient OK_HTTP_CLIENT = addInterceptor()
                 .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .build();
+
     }
 
     /**

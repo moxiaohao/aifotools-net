@@ -21,5 +21,5 @@ public enum ConfigKeys {
     NET_GLOBLE_PARAMS,
     NET_HEADERS,
     NET_FILTER,
-
+    NET_NO_PROXY,
 }

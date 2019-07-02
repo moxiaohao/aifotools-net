@@ -117,6 +117,11 @@ public final class Configurator {
         return this;
     }
 
+    public final Configurator withNoProxy(boolean noProxy) {
+        FOYO_CONFIGS.put(ConfigKeys.NET_NO_PROXY, noProxy);
+        return this;
+    }
+
     public Configurator withJavascriptInterface(@NonNull String name) {
         FOYO_CONFIGS.put(ConfigKeys.JAVASCRIPT_INTERFACE, name);
         return this;
