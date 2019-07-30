@@ -16,12 +16,12 @@ public class AppRespFilter implements RespFilter {
     public RespData filter(RespChain chain) throws Exception {
 
         RespData respData = chain.respData();
-        if (null == respData.respError) {
-            BaseEntity entity = (BaseEntity) respData.respEntity.entity();
-            if(entity.code == 0){
-                respData.respError = new RespError(100,"脑子坏了");
-            }
-        }
+//        if (null == respData.respError) {
+//            BaseEntity entity = (BaseEntity) respData.respEntity.entity();
+//            if(entity.code == 0){
+//                respData.respError = new RespError(100,"脑子坏了");
+//            }
+//        }
         return respData;
     }
 }

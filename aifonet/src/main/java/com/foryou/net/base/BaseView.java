@@ -9,13 +9,8 @@ import com.foryou.net.rx.FoYoLifeCycle;
  * Date: 7/1/2019
  * Email: shenlei@foryou56.com
  */
-public interface BaseView<T> extends FoYoLifeCycle {
+public interface BaseView extends FoYoLifeCycle {
 
-    /**t
-     * Presenter 获取view 的 Context
-     *
-     * @return
-     */
     Context getViewContext();
 
 }

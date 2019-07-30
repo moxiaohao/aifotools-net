@@ -7,10 +7,11 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
+//        maven { url 'https://repo.rdc.aliyun.com/repository/49266-release-ESeUBB'}
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        classpath 'com.android.tools.build:gradle:3.4.2'
+//      classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -19,8 +20,8 @@ allprojects {
     repositories {
         google()
         jcenter()
-
-        maven { url 'https://repo.rdc.aliyun.com/repository/49266-release-ESeUBB'}
+        mavenCentral()
+//        maven { url 'https://repo.rdc.aliyun.com/repository/49266-release-ESeUBB'}
     }
 }
 
@@ -28,21 +29,14 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-
-ext {
-    compileSdkVer = 28
-    buildToolsVer = '27.0.3'
-    minSdkVer = 15
-    targetSdkVer = 28
-    lowTargetSdkVer = 22
-    support_library_version = '27.1.1'
-    v4Version = "27.0.3"
-}
-
-ext.supportLibVersion = '27.1.0'
-ext.archVersion = '1.0.0'
-ext.archRuntimeVersion = '1.1.0'
-ext.archExtensionVersion = '1.1.0'
+ext.compileSdkVer = 28
+ext.buildToolsVer = '27.0.3'
+ext.minSdkVer = 15
+ext.targetSdkVer = 28
+ext.lowTargetSdkVer = 22
+ext.v4Version = "27.1.1"
+ext.supportLibVersion = '27.1.1'
+//third
 ext.retrofitVersion = '2.3.0'
 ext.okhttpVersion = '3.4.1'
 ext.daggerVersion = '2.11'
@@ -57,6 +51,9 @@ ext.supportTestVersion = "1.0.0"
 ext.espressoCoreVersion = "3.0.1"
 ext.mockitoVersion = "2.7.19"
 ext.materialSearchViewVersion = "1.4.0"
-ext.circularProgressbarVersion = "1.1.1"
 ext.jodaTimeVersion = "2.9.9"
 ext.mockWebServerVersion = "3.8.1"
+//arch
+ext.archVersion = '1.0.0'
+ext.archRuntimeVersion = '1.1.0'
+ext.archExtensionVersion = '1.1.0'

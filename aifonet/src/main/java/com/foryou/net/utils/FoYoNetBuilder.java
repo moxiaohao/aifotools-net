@@ -7,19 +7,17 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
-
 import com.foryou.net.FoYoNet;
 import com.foryou.net.callback.IFailure;
 import com.foryou.net.callback.ISuccess;
 import com.foryou.net.config.ConfigKeys;
 import com.foryou.net.config.Configurator;
 import com.foryou.net.http.IMethod;
-import com.foryou.net.loader.LoaderStyle;
 import com.foryou.net.base.BaseView;
 import com.foryou.net.rx.FoYoLifeCycle;
-
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+
 
 /**
  * Description:
@@ -33,7 +31,6 @@ public class FoYoNetBuilder {
     private Map<String, Object> PARAMS = new WeakHashMap<>();
     private RequestBody mRequestBody = null;
     private Context mContext = null;
-    private LoaderStyle mLoaderStyle = null;
     private File mFile = null;
     private ISuccess mSuccess = null;
     private IFailure mFailure = null;
@@ -114,18 +111,6 @@ public class FoYoNetBuilder {
         return this;
     }
 
-    public final FoYoNetBuilder loader(Context context, LoaderStyle loaderStyle) {
-        this.mContext = context;
-        this.mLoaderStyle = loaderStyle;
-        return this;
-    }
-
-    public final FoYoNetBuilder loader(Context context) {
-        this.mContext = context;
-        this.mLoaderStyle = LoaderStyle.BallSpinFadeLoaderIndicator;
-        return this;
-    }
-
     public final FoYoNetBuilder success(ISuccess success) {
         this.mSuccess = success;
         return this;
@@ -147,7 +132,7 @@ public class FoYoNetBuilder {
         }
         return new FoYoNet(mUrl, mService,
                 mMethod, PARAMS, mRequestBody,
-                mContext, mLoaderStyle, mSuccess,
+                mContext,  mSuccess,
                 mFailure, mFoYoRxLifecycle);
     }
 

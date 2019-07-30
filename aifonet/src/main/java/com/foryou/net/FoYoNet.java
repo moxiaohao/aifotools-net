@@ -2,25 +2,19 @@ package com.foryou.net;
 
 import android.content.Context;
 import android.os.Handler;
-
 import java.util.Map;
 import java.util.WeakHashMap;
-
 import com.foryou.net.callback.IFailure;
 import com.foryou.net.callback.ISuccess;
 import com.foryou.net.config.Configurator;
 import com.foryou.net.config.ConfigKeys;
 import com.foryou.net.http.IMethod;
 import com.foryou.net.http.HttpCreator;
-import com.foryou.net.loader.FoYoLoader;
-import com.foryou.net.loader.LoaderStyle;
 import com.foryou.net.rx.FoYoLifeCycle;
 import com.foryou.net.rx.FoYoObserver;
 import com.foryou.net.rx.SwitchSchedulers;
 import com.foryou.net.utils.FoYoNetBuilder;
-
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import okhttp3.RequestBody;
 
 /**
@@ -36,7 +30,6 @@ public class FoYoNet {
     private final String URL;
     private final WeakHashMap<String, Object> PARAMS = new WeakHashMap<>();
     private final RequestBody BODY;
-    private final LoaderStyle LOADER_STYLE;
     private final Context CONTEXT;
     private final ISuccess<Object> SUCCESS;
     private final IFailure FAILURE;
@@ -50,7 +43,6 @@ public class FoYoNet {
                    Map<String, Object> params,
                    RequestBody body,
                    Context context,
-                   LoaderStyle loaderStyle,
                    ISuccess<Object> success,
                    IFailure failure,
                    FoYoLifeCycle lifecycle
@@ -64,7 +56,6 @@ public class FoYoNet {
         PARAMS.putAll(params);
         this.BODY = body;
         this.CONTEXT = context;
-        this.LOADER_STYLE = loaderStyle;
         this.SUCCESS = success;
         this.FAILURE = failure;
         this.LIFE_CYCLE = lifecycle;
@@ -143,13 +134,11 @@ public class FoYoNet {
      */
     public void excute() {
         try {
-            showLoading();
             Observable o = request();
             if (null != o) {
                 execute(o, new CallListener() {
                     @Override
                     public void onSucc(Object data) {
-                        stopLoding();
                         if (null != SUCCESS) {
                             SUCCESS.onSuccess(data);
                         }
@@ -157,7 +146,6 @@ public class FoYoNet {
 
                     @Override
                     public void onFail(int code, String desc) {
-                        stopLoding();
                         if (null != FAILURE) {
                             FAILURE.onFailure(code, desc);
                         }
@@ -168,7 +156,6 @@ public class FoYoNet {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            stopLoding();
         }
     }
 
@@ -195,18 +182,6 @@ public class FoYoNet {
                 callBack.onFail(code, desc);
             }
         });
-    }
-
-    private void showLoading() {
-        if (null != CONTEXT && null != LOADER_STYLE) {
-            FoYoLoader.showLoading(CONTEXT, LOADER_STYLE);
-        }
-    }
-
-    private void stopLoding() {
-        if (null != LOADER_STYLE) {
-            FoYoLoader.stopLoading();
-        }
     }
 
 

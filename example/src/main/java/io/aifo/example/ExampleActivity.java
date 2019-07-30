@@ -52,9 +52,15 @@ public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycl
 //                        }
 //                    }
 //                });
+//                Intent intent = new Intent(ExampleActivity.this, SecondActivity.class);
+//                startActivity(intent);
 
-                Intent intent = new Intent(ExampleActivity.this, SecondActivity.class);
-                startActivity(intent);
+                for (int i = 0; i < 500; i++) {
+                    request(task -> {
+                    }, (code, desc) -> {
+                    });
+                    System.out.println("----------------->"+i);
+                }
             }
         });
     }
@@ -77,7 +83,6 @@ public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycl
         FoYoNet.builder()
                 .params("username", "jake") //添加参数
                 .params("password", "123456")
-                .loader(ExampleActivity.this) //添加默认加载状态
                 .bindLifeCycle(this) //绑定生命周期 处理内存泄露
                 .service(CommonService.class)  //Retrofit 请求 Service类
                 .method((IMethod<CommonService>) CommonService::login) //具体的请求 方法
@@ -87,7 +92,7 @@ public class ExampleActivity extends RxAppCompatActivity implements FoYoLifeCycl
                 })
                 .failure((code, desc) -> {
                     fail.onTaskLoadedFail(code, desc);
-                    FoYoLogger.i(TAG, "request failed and do something"); //请求失败 提示原因
+                    FoYoLogger.i(TAG, "request failed and do something----->"+desc); //请求失败 提示原因
                 })
                 .build()//构建
                 .excute();//执行
