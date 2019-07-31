@@ -3,6 +3,15 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 
+
+//configurations.all {
+//    resolutionStrategy {
+//        failOnVersionConflict()
+//        //强制制定版本原因  retrofit-rxadapter rxlifecycle2 rx中分别带有不同版本的 rxjava 和 rxandroid 无法得到统一
+//        force 'org.jetbrains.kotlin:kotlin-stdlib:1.2.71'
+//    }
+//}
+
 android {
     compileSdkVersion compileSdkVer
 
@@ -32,7 +41,7 @@ dependencies {
 //  implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 //  implementation 'androidx.appcompat:appcompat:1.0.0-alpha1'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //noinspection GradleCompatible
     implementation project(':aifonet')
 
