@@ -10,9 +10,10 @@ buildscript {
 //        maven { url 'https://repo.rdc.aliyun.com/repository/49266-release-ESeUBB'}
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.2'
-//      classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+         //noinspection GradleDependency
+         classpath 'com.android.tools.build:gradle:3.2.1'
+         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
