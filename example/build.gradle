@@ -12,6 +12,25 @@ apply plugin: 'kotlin-android-extensions'
 //    }
 //}
 
+
+configurations.all {
+    resolutionStrategy {
+        failOnVersionConflict()
+        //强制制定版本原因  retrofit-rxadapter rxlifecycle2 rx中分别带有不同版本的 rxjava 和 rxandroid 无法得到统一
+        force 'com.android.support:support-annotations:27.1.1'
+        force 'com.android.support:support-core-utils:27.1.1'
+        force 'com.android.support:support-core-ui:27.1.1'
+        force 'com.android.support:support-compat:27.1.1'
+        force 'com.android.support:support-fragment:27.1.1'
+        force 'com.android.support:support-v4:27.1.1'
+        force 'io.reactivex.rxjava2:rxjava:2.2.10'
+        force 'io.reactivex.rxjava2:rxandroid:2.1.1'
+        force 'org.jetbrains.kotlin:kotlin-stdlib:1.2.71'
+        force 'com.google.guava:guava:23.0'
+        force 'org.apache.httpcomponents:httpcore:4.4.5'
+    }
+}
+
 android {
     compileSdkVersion compileSdkVer
 
